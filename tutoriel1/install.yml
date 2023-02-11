@@ -1,0 +1,29 @@
+---
+- name: Installation du server
+  hosts: all
+  remote_user: root
+  tasks:
+    - name: "USER | Création de {{ user }}"
+      user:
+        name: "{{ user }}"
+        shell: /bin/bash
+    - name: USER | Clef SSH
+      authorized_key:
+        user: "{{ user }}"
+        state: present
+        key: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"
+
+    - name: APT | Update & Upgrade
+      apt:
+        upgrade: dist
+        update_cache: yes
+    - include_role:
+        name: tools
+
+  #  - name: "USER | Sudoers {{ user }}"
+  #    lineinfile:
+  #     dest: /etc/sudoers
+  #     state: present
+  #     regexp: "^{{ user }}"
+  #     line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
+  #     validate: 'visudo -cf %s'

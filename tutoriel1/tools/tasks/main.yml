@@ -1,0 +1,9 @@
+---
+- name: TOOLS | fish + vim + git
+  apt:
+    name:
+      - fish
+      - vim
+      - git
+      - screenfetch
+    state: present
